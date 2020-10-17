@@ -33,14 +33,12 @@ time.sleep(2)
 typeBar = driver.find_element_by_class_name('word-input')
 
 wordsString = ''
-def listToString():
-    wordsList = driver.find_elements_by_class_name('word')
-    for word in wordsList:
-        wordsString += word.text + " "
+wordsList = driver.find_elements_by_class_name('word')
+for word in wordsList:
+    wordsString += word.text + " "
 
-listToString()
 print(wordsString)
 typeBar.send_keys(wordsString)
 
-# time.sleep(10)
-# driver.quit()
+time.sleep(10)
+driver.quit()
