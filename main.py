@@ -19,26 +19,52 @@
 # print(len(words))
 # print(page_soup)
 
-
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 import time
 
+# open chrome driver
 PATH = "C:\chromedriver.exe"
 driver = webdriver.Chrome(PATH)
 driver.get("https://typefast.io")
 time.sleep(2)
 
-# content = driver.page_source
+# find element to type into
 typeBar = driver.find_element_by_class_name('word-input')
 
-wordsString = ''
-wordsList = driver.find_elements_by_class_name('word')
-for word in wordsList:
-    wordsString += word.text + " "
+# finds and inserts words into input element function
+wordsToInsert = ''
 
-print(wordsString)
-typeBar.send_keys(wordsString)
 
+def wordInsertion():
+    global wordsToInsert
+    wordsToRemove = wordsToInsert
+    wordsToInsert = ''
+
+    # finds visible words and puts them into wordsString
+    wordList = driver.find_elements_by_class_name('word')
+    for word in wordList:
+        wordsToInsert += word.text + " "
+
+    # deletes the last words from the string
+    try:
+        wordsToRemove = wordsToRemove.split(' ')
+        print('lastWords: ')
+        print(wordsToRemove)
+    except:
+        pass
+
+    for wordToRemove in wordsToRemove:
+        wordsToInsert = wordsToInsert.replace(wordToRemove, '')
+
+    # inserts them into the input element
+    print('wordsString: ' + wordsToInsert)
+    typeBar.send_keys(wordsToInsert)
+    time.sleep(0.5)
+
+
+for x in range(15):
+    wordInsertion()
+
+# sleeps before shutting down
 time.sleep(10)
 driver.quit()
